@@ -186,7 +186,7 @@ class UkrPostBot : TelegramLongPollingBot() {
                         ButtonSetting("doc","doc")
                     )
                 )
-                "doc"->sendDocumentMessage(update,"jetbrains://idea/navigate/reference?project=ukr-post&path=static/document")
+                "doc"->sendDocumentMessage(update,"https://github.com/Sveticov/ukr-post/blob/master/src/main/resources/static/document")
 
 
             }
@@ -239,8 +239,9 @@ class UkrPostBot : TelegramLongPollingBot() {
         execute(
             SendDocument()
                 .setChatId(update.callbackQuery.message.chatId)
-                .setDocument(document)
-                .setCaption("Documents")
+                .setDocument("src/main/resources/static/ДОКУМЕНТИ, ЩО ПОДАЮТЬСЯ ОСОБОЮ ПІД ЧАС ПРИЙНЯТТЯ НА РОБОТУ.pdf")
+                .setCaption("ДОКУМЕНТИ, ЩО ПОДАЮТЬСЯ ОСОБОЮ ПІД ЧАС ПРИЙНЯТТЯ НА РОБОТУ")
+               // .deserializeResponse(document)
         )
     }
 }
