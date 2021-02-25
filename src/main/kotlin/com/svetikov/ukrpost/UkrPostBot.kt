@@ -57,8 +57,14 @@ class UkrPostBot : TelegramLongPollingBot() {
                 )
                 "next_1" -> sendOneMessage(
                     update, "Тож тобі необхідно взяти у відділі кадрів перелік наступних документів",
-                    listOf(ButtonSetting("Далі", "next_2"))
+                    listOf(
+                        ButtonSetting("Далі", "next_2"),
+                        ButtonSetting("Документи", "doc")
+                    )
                 )
+                "doc" ->sendDocumentMessage(update,"",
+                    listOf(ButtonSetting("Далі", "next_2")
+                ))
 
                 "next_2" -> sendOneMessage(
                     update, "Оформлення в офісі за адрессою", listOf(
@@ -183,10 +189,10 @@ class UkrPostBot : TelegramLongPollingBot() {
                 )
                 "end" -> sendOneMessage(
                     update, "Вітаю тебе з першим робочим днем ${update.callbackQuery.from.firstName}", listOf(
-                        ButtonSetting("doc","doc")
+
                     )
                 )
-                "doc"->sendDocumentMessage(update,"https://github.com/Sveticov/ukr-post/blob/master/src/main/resources/static/document")
+
 
 
             }
@@ -235,13 +241,17 @@ class UkrPostBot : TelegramLongPollingBot() {
         )
     }
 
-    private fun sendDocumentMessage(update: Update,document:String){
+    private fun sendDocumentMessage(update: Update,document:String,buttonSetting: List<ButtonSetting>){
         execute(
             SendDocument()
                 .setChatId(update.callbackQuery.message.chatId)
-                .setDocument("src/main/resources/static/ДОКУМЕНТИ, ЩО ПОДАЮТЬСЯ ОСОБОЮ ПІД ЧАС ПРИЙНЯТТЯ НА РОБОТУ.pdf")
+                .setDocument("https://kubg.edu.ua/images/stories/Departaments/kadri/2016/dokumenty_pratsevlasht_16.pdf")
                 .setCaption("ДОКУМЕНТИ, ЩО ПОДАЮТЬСЯ ОСОБОЮ ПІД ЧАС ПРИЙНЯТТЯ НА РОБОТУ")
-               // .deserializeResponse(document)
+                .setReplyMarkup(InlineKeyboardMarkup().apply {
+                    keyboard = listOf(
+                        buttonSetting.map{InlineKeyboardButton(it.message).apply  { callbackData = it.destination }}
+                    )
+                })
         )
     }
 }
